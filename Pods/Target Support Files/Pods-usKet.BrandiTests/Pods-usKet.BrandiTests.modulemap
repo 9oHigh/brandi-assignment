@@ -1,0 +1,6 @@
+framework module Pods_usKet_BrandiTests {
+  umbrella header "Pods-usKet.BrandiTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
