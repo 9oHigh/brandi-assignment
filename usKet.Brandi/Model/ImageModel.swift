@@ -6,6 +6,11 @@
 //
 
 struct ImageModel {
-    let meta: Meta
-    let documents: [Document]
+    var meta: Meta
+    var documents: [Document]
+    
+    init(meta: Meta?, documents: [Document]?) {
+        self.meta = meta ?? Meta(totalCount: 0, pageableCount: 0, isEnd: true)
+        self.documents = documents ?? [Document(collection: "", thumbnailURL: "", imageURL: "", width: 0, height: 0, displaySitename: "", docURL: "", datetime: "")]
+    }
 }

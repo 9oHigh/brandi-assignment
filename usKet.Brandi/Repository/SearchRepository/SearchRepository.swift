@@ -11,9 +11,7 @@ final class SearchRepository {
     
     private let provider = MoyaProvider<SearchTarget>()
     
-    func fetchSources(apiKey: String, query: String, sortType: ResultSortType, page: Int, size: Int, onCompletion: @escaping (Source?,APIError?) -> Void){
-        
-        let parm = SearchParameter(query: query, sortType: sortType, page: page, size: size)
+    func fetchSources(apiKey: String, parm : SearchParameter, onCompletion: @escaping (Source?,APIError?) -> Void){
         
         provider.request(.requestSource(apiKey: apiKey, parm: parm)){ result in
             switch result {

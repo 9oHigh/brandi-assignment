@@ -31,6 +31,9 @@
 		4C1E342F27D2838900A146D0 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E342E27D2838900A146D0 /* Document.swift */; };
 		4C1E343127D283B400A146D0 /* Meta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E343027D283B400A146D0 /* Meta.swift */; };
 		4C1E343827D2980800A146D0 /* SearchParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E343727D2980800A146D0 /* SearchParameter.swift */; };
+		4C1E343A27D29C1700A146D0 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E343927D29C1700A146D0 /* Service.swift */; };
+		4C1E343C27D2AC0300A146D0 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E343B27D2AC0300A146D0 /* UIViewController + Extension.swift */; };
+		4C1E343E27D2B27E00A146D0 /* InformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E343D27D2B27E00A146D0 /* InformView.swift */; };
 		854408D6299336BB1C11FB68 /* Pods_usKet_Brandi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFEAC38688E574B7790C6E41 /* Pods_usKet_Brandi.framework */; };
 		F6A39C52D4AE47426BDF6E15 /* Pods_usKet_Brandi_usKet_BrandiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC804DB4D4BFF7AC02F45AF3 /* Pods_usKet_Brandi_usKet_BrandiUITests.framework */; };
 /* End PBXBuildFile section */
@@ -84,6 +87,9 @@
 		4C1E342E27D2838900A146D0 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		4C1E343027D283B400A146D0 /* Meta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meta.swift; sourceTree = "<group>"; };
 		4C1E343727D2980800A146D0 /* SearchParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchParameter.swift; sourceTree = "<group>"; };
+		4C1E343927D29C1700A146D0 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		4C1E343B27D2AC0300A146D0 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
+		4C1E343D27D2B27E00A146D0 /* InformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformView.swift; sourceTree = "<group>"; };
 		6B063306994A5F891420775E /* Pods-usKet.Brandi-usKet.BrandiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-usKet.Brandi-usKet.BrandiUITests.release.xcconfig"; path = "Target Support Files/Pods-usKet.Brandi-usKet.BrandiUITests/Pods-usKet.Brandi-usKet.BrandiUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B1E8C5481287F9B1DC9AF2E9 /* Pods-usKet.BrandiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-usKet.BrandiTests.debug.xcconfig"; path = "Target Support Files/Pods-usKet.BrandiTests/Pods-usKet.BrandiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC804DB4D4BFF7AC02F45AF3 /* Pods_usKet_Brandi_usKet_BrandiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_usKet_Brandi_usKet_BrandiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +157,6 @@
 				4C1E342927D2827600A146D0 /* Model */,
 				4C1E340927D21C3F00A146D0 /* View */,
 				4C1E340A27D21C4700A146D0 /* ViewModel */,
-				4C1E341C27D2528D00A146D0 /* Network */,
 				4C1E340527D21A3300A146D0 /* Utils */,
 			);
 			path = usKet.Brandi;
@@ -188,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				4C1E340C27D21C6A00A146D0 /* Controller */,
+				4C1E343F27D2B28B00A146D0 /* Reusable */,
 				4C1E340B27D21C6000A146D0 /* Cell */,
 			);
 			path = View;
@@ -223,15 +229,9 @@
 			children = (
 				4C1E341527D2276700A146D0 /* UICollectionViewCell + Extension.swift */,
 				4C1E341A27D24A5900A146D0 /* UICollectionView + Extension.swift */,
+				4C1E343B27D2AC0300A146D0 /* UIViewController + Extension.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		4C1E341C27D2528D00A146D0 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		4C1E342027D2554C00A146D0 /* Entites */ = {
@@ -294,8 +294,17 @@
 		4C1E343427D28DB600A146D0 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				4C1E343927D29C1700A146D0 /* Service.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		4C1E343F27D2B28B00A146D0 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				4C1E343D27D2B27E00A146D0 /* InformView.swift */,
+			);
+			path = Reusable;
 			sourceTree = "<group>";
 		};
 		7820088B65915E15764066A0 /* Pods */ = {
@@ -560,15 +569,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C1E342527D2796000A146D0 /* IndicatorCollectionViewCell.swift in Sources */,
+				4C1E343E27D2B27E00A146D0 /* InformView.swift in Sources */,
 				4C1E341B27D24A5900A146D0 /* UICollectionView + Extension.swift in Sources */,
 				4C1E340E27D221F100A146D0 /* Source.swift in Sources */,
 				4C1E341027D2249400A146D0 /* SearchViewModel.swift in Sources */,
 				4C1E341927D22C0A00A146D0 /* Utility.swift in Sources */,
 				4C1E343827D2980800A146D0 /* SearchParameter.swift in Sources */,
+				4C1E343C27D2AC0300A146D0 /* UIViewController + Extension.swift in Sources */,
 				4C1E33DA27D201B400A146D0 /* SearchViewController.swift in Sources */,
 				4C1E341427D2271200A146D0 /* ImageCollectionViewCell.swift in Sources */,
 				4C1E33D627D201B400A146D0 /* AppDelegate.swift in Sources */,
 				4C1E342F27D2838900A146D0 /* Document.swift in Sources */,
+				4C1E343A27D29C1700A146D0 /* Service.swift in Sources */,
 				4C1E343127D283B400A146D0 /* Meta.swift in Sources */,
 				4C1E342827D27CE400A146D0 /* SearchTarget.swift in Sources */,
 				4C1E341227D226DD00A146D0 /* Observable.swift in Sources */,
