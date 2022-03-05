@@ -8,7 +8,7 @@
 final class Service {
     
     private let repository = SearchRepository()
-    static let apiKey = "b43117bae6f844401d84e0da8e7b66be"
+    static let apiKey = ""
     private var model = ImageModel(meta: nil, documents: nil)
     
     func fetchDatas(parm: SearchParameter, onCompletion: @escaping (ImageModel?,APIError?) -> Void){
