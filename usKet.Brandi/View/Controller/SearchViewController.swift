@@ -7,30 +7,26 @@
 
 import UIKit
 import Kingfisher
+import RxSwift
+import RxCocoa
 
 final class SearchViewController: UIViewController {
     
-    lazy var searchController : UISearchController = {
+    let searchController : UISearchController = {
         let searchController = Utility.configureSearchController()
-        searchController.searchBar.delegate = self
         return searchController
     }()
-    
-    lazy var informView = InformView()
-    
-    lazy var ImageCollectionView : UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
+    let ImageCollectionView : UICollectionView = {
+        let collectionView = Utility.configureCollectionView()
         return collectionView
     }()
+    lazy var informView = InformView()
+    
+    private var isEnd : Bool = true
+    private var indicatorView: ImageCollectionFooterView?
     
     private let viewModel = SearchViewModel()
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,78 +37,105 @@ final class SearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Network Observer
         monitorNetwork()
     }
     
     private func setConfigure(){
-        
-        title = "Brandi"
+        // ViewController Config
+        title = "Daum Images"
         view.backgroundColor = .white
         navigationItem.searchController = searchController
+        
+        // ImageCollectionView Config
+        ImageCollectionView.delegate = self
+        ImageCollectionView.dataSource = self
+        ImageCollectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.cellIdentifier)
+        ImageCollectionView.register(ImageCollectionFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ImageCollectionFooterView.footerIdentifier)
     }
     
     private func setUI(){
         
         view.addSubview(ImageCollectionView)
-        
         ImageCollectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
     private func binding(){
-        viewModel.items.bind { [weak self] images in
-            if images.documents.count == 0 {
-                self?.informEmpty()
-            } else {
-                self?.removeInform()
-                DispatchQueue.main.async {
-                    self?.ImageCollectionView.reloadData()
-                }
+        // Search: after a second
+        searchController.searchBar.rx.text.orEmpty
+            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .subscribe{ [weak self] text in 
+                self?.viewModel.fetchImages(query: text, onCompletion: { [weak self] images in
+                    guard let images = images else { return }
+                    
+                    if images.documents.count == 0 {
+                        self?.alertEmpty()
+                    } else {
+                        self?.isEnd = false
+                        self?.removeInform()
+                    }
+                })
+                
             }
-        }
+            .disposed(by: disposeBag)
         
-        viewModel.query.bind { <#String#> in
-            <#code#>
-        }
+        // Cancel Search: Clear Model
+        searchController.searchBar.rx.cancelButtonClicked
+            .observe(on: MainScheduler.instance)
+            .subscribe({ [weak self] _ in
+                self?.viewModel.clearItems {
+                    self?.ImageCollectionView.reloadData()
+                    self?.informView.removeFromSuperview()
+                }
+            })
+            .disposed(by: disposeBag)
         
-        viewModel.page.bind { <#Int#> in
-            <#code#>
-        }
-        
-        viewModel.errorMessage.bind { <#String#> in
-            <#code#>
+        // Network ErrorMessage
+        viewModel.errorMessage.bind { [weak self] text in
+            text.isEmpty ? () : self?.showToast(message: text)
         }
     }
     
-    private func informEmpty(){
-        informView.setInformText(message: "검색결과가 없습니다.\n다른 키워드를 입력해보세요!")
-
-        view.addSubview(informView)
-        informView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-    
+    // Images are not empty
     private func removeInform(){
         informView.removeFromSuperview()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+            self.ImageCollectionView.reloadData()
+            self.ImageCollectionView.setContentOffset(CGPoint(x: 0, y: -self.getNavigationBarHeight()!), animated: true)
+        }
+    }
+    
+    // Images are empty
+    private func alertEmpty(){
+        isEnd = true
+        self.ImageCollectionView.reloadData()
+        informView.setInformText(message: "검색결과가 없습니다.\n다른 키워드를 입력해보세요!")
+        view.addSubview(informView)
+        informView.snp.makeConstraints { make in
+            make.top.equalTo(getNavigationBarHeight()!)
+            make.bottom.leading.trailing.equalToSuperview()
+        }
     }
 }
-extension SearchViewController : UICollectionViewDataSource,UICollectionViewDelegate {
+extension SearchViewController : UICollectionViewDataSource,UICollectionViewDelegate{
+    
+    // MARK: - Cell
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return viewModel.numberOfItem
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.cellIdentifier, for: indexPath) as? ImageCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let path = viewModel.items.value.documents
-        let url = URL(string: path[indexPath.item].thumbnailURL)
-        cell.imageView.kf.indicatorType = .activity
+        
+        let path = viewModel.items.documents
+        let url = URL(string: path[indexPath.row].thumbnailURL)
+        cell.imageView.kf.indicator?.startAnimatingView()
         cell.imageView.kf.setImage(with: url)
         
         return cell
@@ -120,6 +143,45 @@ extension SearchViewController : UICollectionViewDataSource,UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == viewModel.numberOfItem - viewModel.numberOfItem / 10 && !isEnd {
+            DispatchQueue.main.async {
+                self.viewModel.addImages { [weak self] _ , isContinue in
+                    guard let isContinue = isContinue else {
+                        return
+                    }
+                    self?.isEnd = isContinue ? true : false
+                    self?.ImageCollectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Indicator
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionFooter {
+            if let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ImageCollectionFooterView.footerIdentifier, for: indexPath) as? ImageCollectionFooterView {
+                indicatorView = footerView
+                return footerView
+            }
+        }
+        return UICollectionReusableView()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        if elementKind == UICollectionView.elementKindSectionFooter {
+            // -1 : Default Value has a Model(nil)
+            viewModel.numberOfItem - 1 == 0 ? indicatorView?.indicator.stopAnimating(): indicatorView?.indicator.startAnimating()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+        if elementKind == UICollectionView.elementKindSectionFooter {
+            indicatorView?.indicator.stopAnimating()
+        }
     }
     
 }
@@ -136,7 +198,8 @@ extension SearchViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return collectionView.interval
     }
-}
-extension SearchViewController : UISearchBarDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return isEnd ? CGSize.zero : CGSize(width: collectionView.bounds.size.width, height: 55)
+    }
 }

@@ -7,22 +7,17 @@
 
 final class Service {
     
+    private let apiKey = ""
     private let repository = SearchRepository()
-    static let apiKey = ""
     private var model = ImageModel(meta: nil, documents: nil)
     
     func fetchDatas(parm: SearchParameter, onCompletion: @escaping (ImageModel?,APIError?) -> Void){
-        repository.fetchSources(apiKey: Service.apiKey, parm: parm) { [weak self] source, error in
-            
-            guard let error = error else {
-                return
-            }
-            onCompletion(nil,error)
-            
+        repository.fetchSources(apiKey: apiKey, parm: parm) { [weak self] source, error in
+
             guard let source = source else {
+                onCompletion(nil,error)
                 return
             }
-            
             self?.model.meta = source.meta
             self?.model.documents = source.documents
             onCompletion(self?.model,nil)

@@ -49,7 +49,7 @@ extension SearchTarget : TargetType {
                 "sort": parm.sortType.rawValue,
                 "page": parm.page,
                 "size": parm.size
-            ], encoding: URLEncoding(arrayEncoding: .noBrackets))
+            ], encoding: URLEncoding.default)
         }
         
     }

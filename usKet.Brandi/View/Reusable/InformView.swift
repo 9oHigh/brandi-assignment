@@ -11,9 +11,10 @@ final class InformView : UIView {
     
     let informLabel : UILabel = {
         let label = UILabel()
+        label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
@@ -22,7 +23,8 @@ final class InformView : UIView {
         
         addSubview(informLabel)
         informLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.5)
         }
     }
     
