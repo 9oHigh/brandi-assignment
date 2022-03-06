@@ -10,7 +10,7 @@ import Kingfisher
 import RxSwift
 import RxCocoa
 
-final class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController,ViewControllerType {
     
     let searchController : UISearchController = {
         let searchController = Utility.configureSearchController()
@@ -37,11 +37,11 @@ final class SearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Network Observer
+        // Network
         monitorNetwork()
     }
     
-    private func setConfigure(){
+    func setConfigure(){
         // ViewController Config
         title = "Daum Images"
         view.backgroundColor = .white
@@ -54,7 +54,7 @@ final class SearchViewController: UIViewController {
         ImageCollectionView.register(ImageCollectionFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ImageCollectionFooterView.footerIdentifier)
     }
     
-    private func setUI(){
+    func setUI(){
         
         view.addSubview(ImageCollectionView)
         ImageCollectionView.snp.makeConstraints { make in
@@ -65,7 +65,7 @@ final class SearchViewController: UIViewController {
     private func binding(){
         // Search: after a second
         searchController.searchBar.rx.text.orEmpty
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .debounce(.seconds(1), scheduler: MainScheduler.asyncInstance) // Searchable when scrolling
             .subscribe{ [weak self] text in 
                 self?.viewModel.fetchImages(query: text, onCompletion: { [weak self] images in
                     guard let images = images else { return }
@@ -101,7 +101,7 @@ final class SearchViewController: UIViewController {
     // Images are not empty
     private func removeInform(){
         informView.removeFromSuperview()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+        DispatchQueue.main.async {
             self.ImageCollectionView.reloadData()
             self.ImageCollectionView.setContentOffset(CGPoint(x: 0, y: -self.getNavigationBarHeight()!), animated: true)
         }
@@ -143,6 +143,14 @@ extension SearchViewController : UICollectionViewDataSource,UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        let detailViewController = DetailViewController()
+        let path = viewModel.items.documents[indexPath.row]
+        let url = URL(string: path.imageURL)
+        
+        detailViewController.imageView.kf.setImage(with: url)
+        detailViewController.postInformView.siteLabel.text = "제공: " + path.displaySitename
+        detailViewController.postInformView.dateLabel.text = "업로드: " + Utility.prettierDate(path.datetime)
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

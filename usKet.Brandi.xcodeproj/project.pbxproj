@@ -35,6 +35,9 @@
 		4C1E343E27D2B27E00A146D0 /* InformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E343D27D2B27E00A146D0 /* InformView.swift */; };
 		4C1E344127D33B0E00A146D0 /* ImageCollectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E344027D33B0E00A146D0 /* ImageCollectionFooterView.swift */; };
 		4C1E344327D33BE900A146D0 /* UICollectionReusable + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E344227D33BE900A146D0 /* UICollectionReusable + Extension.swift */; };
+		4C80A7B927D47DE00056EC71 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C80A7B827D47DDF0056EC71 /* DetailViewController.swift */; };
+		4C80A7BB27D488030056EC71 /* UIViewController + Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C80A7BA27D488030056EC71 /* UIViewController + Protocol.swift */; };
+		4C80A7BE27D4FD5B0056EC71 /* PostInfomVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C80A7BD27D4FD5B0056EC71 /* PostInfomVIew.swift */; };
 		854408D6299336BB1C11FB68 /* Pods_usKet_Brandi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFEAC38688E574B7790C6E41 /* Pods_usKet_Brandi.framework */; };
 		F6A39C52D4AE47426BDF6E15 /* Pods_usKet_Brandi_usKet_BrandiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC804DB4D4BFF7AC02F45AF3 /* Pods_usKet_Brandi_usKet_BrandiUITests.framework */; };
 /* End PBXBuildFile section */
@@ -92,6 +95,9 @@
 		4C1E343D27D2B27E00A146D0 /* InformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformView.swift; sourceTree = "<group>"; };
 		4C1E344027D33B0E00A146D0 /* ImageCollectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionFooterView.swift; sourceTree = "<group>"; };
 		4C1E344227D33BE900A146D0 /* UICollectionReusable + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusable + Extension.swift"; sourceTree = "<group>"; };
+		4C80A7B827D47DDF0056EC71 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		4C80A7BA27D488030056EC71 /* UIViewController + Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Protocol.swift"; sourceTree = "<group>"; };
+		4C80A7BD27D4FD5B0056EC71 /* PostInfomVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfomVIew.swift; sourceTree = "<group>"; };
 		6B063306994A5F891420775E /* Pods-usKet.Brandi-usKet.BrandiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-usKet.Brandi-usKet.BrandiUITests.release.xcconfig"; path = "Target Support Files/Pods-usKet.Brandi-usKet.BrandiUITests/Pods-usKet.Brandi-usKet.BrandiUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B1E8C5481287F9B1DC9AF2E9 /* Pods-usKet.BrandiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-usKet.BrandiTests.debug.xcconfig"; path = "Target Support Files/Pods-usKet.BrandiTests/Pods-usKet.BrandiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC804DB4D4BFF7AC02F45AF3 /* Pods_usKet_Brandi_usKet_BrandiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_usKet_Brandi_usKet_BrandiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,6 +193,7 @@
 			children = (
 				4C1E341827D22C0A00A146D0 /* Utility.swift */,
 				4C1E341127D226DD00A146D0 /* Observable.swift */,
+				4C80A7BC27D4880B0056EC71 /* Protocols */,
 				4C1E341727D2291800A146D0 /* Extension */,
 			);
 			path = Utils;
@@ -196,8 +203,8 @@
 			isa = PBXGroup;
 			children = (
 				4C1E340C27D21C6A00A146D0 /* Controller */,
-				4C1E343F27D2B28B00A146D0 /* Reusable */,
 				4C1E340B27D21C6000A146D0 /* Cell */,
+				4C1E343F27D2B28B00A146D0 /* Reusable */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -222,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				4C1E33D927D201B400A146D0 /* SearchViewController.swift */,
+				4C80A7B827D47DDF0056EC71 /* DetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -306,8 +314,17 @@
 			children = (
 				4C1E343D27D2B27E00A146D0 /* InformView.swift */,
 				4C1E344027D33B0E00A146D0 /* ImageCollectionFooterView.swift */,
+				4C80A7BD27D4FD5B0056EC71 /* PostInfomVIew.swift */,
 			);
 			path = Reusable;
+			sourceTree = "<group>";
+		};
+		4C80A7BC27D4880B0056EC71 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				4C80A7BA27D488030056EC71 /* UIViewController + Protocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		7820088B65915E15764066A0 /* Pods */ = {
@@ -573,6 +590,8 @@
 			files = (
 				4C1E343E27D2B27E00A146D0 /* InformView.swift in Sources */,
 				4C1E341B27D24A5900A146D0 /* UICollectionView + Extension.swift in Sources */,
+				4C80A7B927D47DE00056EC71 /* DetailViewController.swift in Sources */,
+				4C80A7BE27D4FD5B0056EC71 /* PostInfomVIew.swift in Sources */,
 				4C1E340E27D221F100A146D0 /* Source.swift in Sources */,
 				4C1E341027D2249400A146D0 /* SearchViewModel.swift in Sources */,
 				4C1E341927D22C0A00A146D0 /* Utility.swift in Sources */,
@@ -580,6 +599,7 @@
 				4C1E343C27D2AC0300A146D0 /* UIViewController + Extension.swift in Sources */,
 				4C1E33DA27D201B400A146D0 /* SearchViewController.swift in Sources */,
 				4C1E341427D2271200A146D0 /* ImageCollectionViewCell.swift in Sources */,
+				4C80A7BB27D488030056EC71 /* UIViewController + Protocol.swift in Sources */,
 				4C1E344127D33B0E00A146D0 /* ImageCollectionFooterView.swift in Sources */,
 				4C1E344327D33BE900A146D0 /* UICollectionReusable + Extension.swift in Sources */,
 				4C1E33D627D201B400A146D0 /* AppDelegate.swift in Sources */,

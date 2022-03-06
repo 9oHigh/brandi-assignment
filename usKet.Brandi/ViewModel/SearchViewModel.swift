@@ -13,7 +13,6 @@ final class SearchViewModel {
     var overlap : String = ""
     var page: Int = 1
     
-
     func fetchImages(query: String, onCompletion: @escaping (ImageModel?) -> Void){
         // overlap return
         if query == overlap { return }

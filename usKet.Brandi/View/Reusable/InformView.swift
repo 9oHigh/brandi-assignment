@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class InformView : UIView {
+final class InformView: UIView {
     
-    let informLabel : UILabel = {
+    let informLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
@@ -32,7 +32,7 @@ final class InformView : UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setInformText(message: String){
+    func setInformText(message: String) {
         informLabel.text = message
     }
 }

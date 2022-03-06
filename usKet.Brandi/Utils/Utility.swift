@@ -30,4 +30,39 @@ final class Utility {
         
         return collectionView
     }
+    
+    static func configureScrollView() -> UIScrollView {
+        let scrollView = UIScrollView()
+        scrollView.bounces = true
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }
+    
+    static func configureImageView() -> UIImageView {
+        
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }
+    
+    static func configureInformLabel() -> UILabel {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        return label
+    }
+    
+    static func prettierDate(_ date: String) -> String {
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        let origin: Date = dateFormatter.date(from: date) ?? Date()
+        
+        dateFormatter.dateFormat = "yyyy년 M월 d일"
+        let value = dateFormatter.string(from: origin)
+
+        return value
+    }
 }
