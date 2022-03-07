@@ -84,13 +84,14 @@
           ```
   2. Indicator: 마지막 페이지 하단에서도 나타나는 이슈
 
-     ![page](https://user-images.githubusercontent.com/53691249/156909733-e2508b53-60bc-4f78-8e67-79ca780ec200.png)
-
       * 첫 번째 조건: 다음 이미지 검색 가이드를 보면 최대 Page는 50이므로 이를 기준
 
-     ![idend](https://user-images.githubusercontent.com/53691249/156909813-cf180335-13f8-4295-94d1-a5edd9deaaf5.png)
+         ![page](https://user-images.githubusercontent.com/53691249/156909733-e2508b53-60bc-4f78-8e67-79ca780ec200.png)
 
       * 두 번째 조건: Meta.isEnd의 값을 기준
+
+         ![idend](https://user-images.githubusercontent.com/53691249/156909813-cf180335-13f8-4295-94d1-a5edd9deaaf5.png)
+     
       * isContinue 프로퍼티를 ViewModel에서 초기화 및 사용, 넘겨준 값을 이용해 indicator start/stop
        ```swift
        func addImages(onCompletion: @escaping (ImageModel?,Bool?)->Void){
@@ -107,9 +108,21 @@
        }
        ```
 
+### 고려사항
+ * UI/UX: Indicator를 CollectionView Footer에 적용
+ * Network: 와이파이, 셀룰러 연결 상태를 확인하고 연결되어 있지 않다면 ToastMessage
+ * 이모티콘: 이모티콘을 입력시에 serverError가 발생 -> 검색결과 없음 화면으로 대체
 
+### 해결하지 못한 것
+  * 스크롤의 속도가 너무 빠르면 데이터를 추가로 가지고 오지 못하고 Indicator만 돌아가는 이슈
+  * API Error가 발생했음에도 .success로 결과가 분리되는 이슈
+    * success의 statusCode를 통해 APIError 초기화 및 사용 ( ViewModel에서 분기처리 )
 
-
+      ```swift
+      case .success(let response):
+          let apiError = APIError(rawValue: response.statusCode)
+          onCompletion(try? response.map(Source.self),apiError)
+      ```
 
 
 
