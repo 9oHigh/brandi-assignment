@@ -10,7 +10,7 @@ import SnapKit
 
 final class ImageCollectionViewCell : UICollectionViewCell {
     
-    let imageView : UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true

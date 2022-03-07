@@ -10,7 +10,7 @@ final class SearchViewModel {
     private let service = Service()
     var errorMessage: Observable<String> = Observable("")
     var items = ImageModel(meta: nil, documents: nil)
-    var overlap : String = ""
+    var overlap: String = ""
     var page: Int = 1
     
     func fetchImages(query: String, onCompletion: @escaping (ImageModel?,Bool?) -> Void){
@@ -69,8 +69,6 @@ final class SearchViewModel {
     func clearItems(onCompletion: @escaping() -> Void){
         items = ImageModel(meta: nil, documents: nil)
         resetPage()
-//        errorMessage = Observable("")
-//        fetchImages(query: "") { _,_ in }
         onCompletion()
     }
     
@@ -81,7 +79,7 @@ final class SearchViewModel {
 
 extension SearchViewModel {
     
-    var numberOfItem : Int {
+    var numberOfItem: Int {
         return items.documents.count
     }
 }

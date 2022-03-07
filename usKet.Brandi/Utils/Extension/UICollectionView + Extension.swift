@@ -9,19 +9,19 @@ import UIKit
 
 extension UICollectionView {
     
-    var interval : CGFloat {
+    var interval: CGFloat {
         return 8
     }
     
-    var originSize : CGFloat {
+    var originSize: CGFloat {
         return bounds.width
     }
     
-    var numberOfEachRow : CGFloat {
+    var numberOfEachRow: CGFloat {
         return 3
     }
     
-    var preferredCellSize : CGSize {
+    var preferredCellSize: CGSize {
         let cellSize = (originSize - interval * (numberOfEachRow + 1)) / numberOfEachRow
         return CGSize(width: cellSize, height: cellSize)
     }

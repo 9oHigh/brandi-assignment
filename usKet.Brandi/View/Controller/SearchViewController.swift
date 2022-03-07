@@ -62,10 +62,11 @@ final class SearchViewController: UIViewController,ViewControllerType {
     }
     
     private func binding(){
+  
         // Search: after a second
         searchController.searchBar.rx.text.orEmpty
             .debounce(.seconds(1), scheduler: MainScheduler.asyncInstance) // Searchable when scrolling
-            .subscribe{ [weak self] text in 
+            .subscribe{ [weak self] text in
                 self?.viewModel.fetchImages(query: text, onCompletion: { [weak self] images,isEnd in
                     
                     guard let images = images else {
@@ -83,7 +84,6 @@ final class SearchViewController: UIViewController,ViewControllerType {
                         self?.removeInform()
                     }
                 })
-                
             }
             .disposed(by: disposeBag)
         
@@ -105,7 +105,7 @@ final class SearchViewController: UIViewController,ViewControllerType {
     }
     
     // Images are not empty
-    private func removeInform(){
+    private func removeInform() {
         informView.removeFromSuperview()
         DispatchQueue.main.async {
             self.ImageCollectionView.reloadData()
@@ -114,9 +114,11 @@ final class SearchViewController: UIViewController,ViewControllerType {
     }
     
     // Images are empty
-    private func alertEmpty(){
-        self.ImageCollectionView.reloadData()
-        informView.setInformText(message: "검색결과가 없습니다.\n다른 키워드를 입력해보세요!")
+    private func alertEmpty() {
+        viewModel.clearItems {
+            self.ImageCollectionView.reloadData()
+            self.informView.setInformText(message: "검색결과가 없습니다.\n다른 키워드를 입력해보세요!")
+        }
         view.addSubview(informView)
         informView.snp.makeConstraints { make in
             make.top.equalTo(getNavigationBarHeight()!)

@@ -55,7 +55,7 @@ final class Utility {
     }
     
     static func prettierDate(_ date: String) -> String {
-        print(date)
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
