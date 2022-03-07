@@ -12,11 +12,11 @@ import RxCocoa
 
 final class SearchViewController: UIViewController,ViewControllerType {
     
-    let searchController : UISearchController = {
+    let searchController: UISearchController = {
         let searchController = Utility.configureSearchController()
         return searchController
     }()
-    let ImageCollectionView : UICollectionView = {
+    let ImageCollectionView: UICollectionView = {
         let collectionView = Utility.configureCollectionView()
         return collectionView
     }()
@@ -34,9 +34,8 @@ final class SearchViewController: UIViewController,ViewControllerType {
         setUI()
         binding()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         // Network
         monitorNetwork()
     }
@@ -67,13 +66,20 @@ final class SearchViewController: UIViewController,ViewControllerType {
         searchController.searchBar.rx.text.orEmpty
             .debounce(.seconds(1), scheduler: MainScheduler.asyncInstance) // Searchable when scrolling
             .subscribe{ [weak self] text in 
-                self?.viewModel.fetchImages(query: text, onCompletion: { [weak self] images in
-                    guard let images = images else { return }
+                self?.viewModel.fetchImages(query: text, onCompletion: { [weak self] images,isEnd in
+                    
+                    guard let images = images else {
+                        self?.alertEmpty()
+                        self?.ImageCollectionView.reloadData()
+                        return
+                    }
+                    guard let isEnd = isEnd else { return }
+                    
+                    self?.isEnd = isEnd
                     
                     if images.documents.count == 0 {
                         self?.alertEmpty()
                     } else {
-                        self?.isEnd = false
                         self?.removeInform()
                     }
                 })
@@ -109,7 +115,6 @@ final class SearchViewController: UIViewController,ViewControllerType {
     
     // Images are empty
     private func alertEmpty(){
-        isEnd = true
         self.ImageCollectionView.reloadData()
         informView.setInformText(message: "검색결과가 없습니다.\n다른 키워드를 입력해보세요!")
         view.addSubview(informView)
@@ -146,7 +151,7 @@ extension SearchViewController : UICollectionViewDataSource,UICollectionViewDele
         let detailViewController = DetailViewController()
         let path = viewModel.items.documents[indexPath.row]
         let url = URL(string: path.imageURL)
-        
+
         detailViewController.imageView.kf.setImage(with: url)
         detailViewController.postInformView.siteLabel.text = "제공: " + path.displaySitename
         detailViewController.postInformView.dateLabel.text = "업로드: " + Utility.prettierDate(path.datetime)
@@ -155,12 +160,12 @@ extension SearchViewController : UICollectionViewDataSource,UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == viewModel.numberOfItem - viewModel.numberOfItem / 10 && !isEnd {
-            DispatchQueue.main.async {
+            DispatchQueue.global(qos: .userInteractive).async {
                 self.viewModel.addImages { [weak self] _ , isContinue in
                     guard let isContinue = isContinue else {
                         return
                     }
-                    self?.isEnd = isContinue ? true : false
+                    self?.isEnd = isContinue ? false : true
                     self?.ImageCollectionView.reloadData()
                 }
             }

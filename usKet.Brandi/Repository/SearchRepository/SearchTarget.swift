@@ -7,13 +7,13 @@
 
 import Moya
 
-enum ResultSortType : String {
+enum ResultSortType: String {
     case accuracy
     case recency
 }
 
 extension ResultSortType {
-    var sortType : String {
+    var sortType: String {
         return rawValue
     }
 }
@@ -22,7 +22,8 @@ enum SearchTarget {
     case requestSource(apiKey: String, parm: SearchParameter)
 }
 
-extension SearchTarget : TargetType {
+extension SearchTarget: TargetType {
+    
     var baseURL: URL {
         return URL(string: "https://dapi.kakao.com")!
     }
@@ -51,7 +52,6 @@ extension SearchTarget : TargetType {
                 "size": parm.size
             ], encoding: URLEncoding.default)
         }
-        
     }
     
     var headers: [String : String]? {

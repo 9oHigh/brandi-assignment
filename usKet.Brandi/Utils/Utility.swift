@@ -42,6 +42,7 @@ final class Utility {
         
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.kf.indicatorType = .activity
         return imageView
     }
     
@@ -54,15 +55,13 @@ final class Utility {
     }
     
     static func prettierDate(_ date: String) -> String {
-
+        print(date)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
         let origin: Date = dateFormatter.date(from: date) ?? Date()
-        
         dateFormatter.dateFormat = "yyyy년 M월 d일"
-        let value = dateFormatter.string(from: origin)
-
-        return value
+        
+        return dateFormatter.string(from: origin)
     }
 }

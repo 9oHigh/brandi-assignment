@@ -12,11 +12,11 @@ final class SearchRepository {
     private let provider = MoyaProvider<SearchTarget>()
     
     func fetchSources(apiKey: String, parm : SearchParameter, onCompletion: @escaping (Source?,APIError?) -> Void){
-        
         provider.request(.requestSource(apiKey: apiKey, parm: parm)){ result in
             switch result {
             case .success(let response):
-                onCompletion(try? response.map(Source.self), nil)
+                let apiError = APIError(rawValue: response.statusCode)
+                onCompletion(try? response.map(Source.self),apiError)
             case .failure(let error):
                 let apiError = APIError(rawValue: error.response?.statusCode ?? 0)
                 onCompletion(nil,apiError)

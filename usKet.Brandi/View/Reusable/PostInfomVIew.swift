@@ -20,13 +20,15 @@ final class PostInformView: UIView {
         
         siteLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().multipliedBy(0.5)
+            make.centerY.equalToSuperview().multipliedBy(0.75)
         }
         
         dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(siteLabel.snp.bottom).offset(15)
+            make.top.equalTo(siteLabel.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
+        
+        setShadow()
     }
     
     required init?(coder: NSCoder) {

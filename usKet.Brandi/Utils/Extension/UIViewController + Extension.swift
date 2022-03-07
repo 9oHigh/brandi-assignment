@@ -38,7 +38,7 @@ extension UIViewController {
         toastLabel.numberOfLines = 0
         toastLabel.textAlignment = .center
         toastLabel.text = message
-        toastLabel.alpha = 0.5
+        toastLabel.alpha = 1.0
         toastLabel.layer.cornerRadius = 10
         toastLabel.clipsToBounds = true
         

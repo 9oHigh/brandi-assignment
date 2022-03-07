@@ -13,7 +13,7 @@ final class SearchViewModel {
     var overlap : String = ""
     var page: Int = 1
     
-    func fetchImages(query: String, onCompletion: @escaping (ImageModel?) -> Void){
+    func fetchImages(query: String, onCompletion: @escaping (ImageModel?,Bool?) -> Void){
         // overlap return
         if query == overlap { return }
         else { overlap = query }
@@ -26,16 +26,18 @@ final class SearchViewModel {
         service.fetchDatas(parm: parm) { [weak self] images, error in
             guard let images = images else {
                 if let error = error {
-                    self?.errorMessage.value = error.description
-                    onCompletion(nil)
+                    self?.clearItems {}
+                    if query != "" {
+                        self?.errorMessage.value = error.description
+                    }
+                    onCompletion(nil,nil)
                 }
                 return
             }
             self?.items = images
             // isLast
-            
             self?.items.meta.isEnd == false ? (self?.page += 1) : ()
-            onCompletion(self?.items)
+            onCompletion(self?.items,self?.items.meta.isEnd)
         }
     }
     
@@ -53,13 +55,13 @@ final class SearchViewModel {
             }
             self?.items.meta = images.meta
             self?.items.documents += images.documents
-            
+
             var isContinue : Bool
             self?.items.meta.isEnd == false ? (self?.page += 1) : ()
             // Max page
             isContinue = self?.page == 50 ? false : true
             // Or isLast
-            isContinue = self!.items.meta.isEnd ? true : false
+            isContinue = self!.items.meta.isEnd ? false : true
             onCompletion(self?.items,isContinue)
         }
     }
@@ -67,8 +69,8 @@ final class SearchViewModel {
     func clearItems(onCompletion: @escaping() -> Void){
         items = ImageModel(meta: nil, documents: nil)
         resetPage()
-        errorMessage = Observable("")
-        fetchImages(query: "") { _ in }
+//        errorMessage = Observable("")
+//        fetchImages(query: "") { _,_ in }
         onCompletion()
     }
     

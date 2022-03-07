@@ -8,7 +8,6 @@
 import Foundation
 
 protocol DescriptionError {
-    
     var description: String { get }
 }
 
@@ -54,7 +53,7 @@ enum APIError: Int, DescriptionError {
         switch self {
             
         case .badRequest:
-            return "잘못된 요청입니다"
+            return "검색할 수 없는 단어입니다."
         case .unauthorized:
             return "인증되지 않았습니다"
         case .forbidden:
@@ -66,7 +65,7 @@ enum APIError: Int, DescriptionError {
         case .tooManyRequest:
             return "너무 많은 요청으로 인해 오류가 발생했습니다"
         case .serverError:
-            return "서버 오류가 발생했습니다"
+            return "검색할 수 없는 단어입니다."
         case .serverUnavalable:
             return "아직 사용할 수 없는 서버입니다"
         case .serverTimeout:

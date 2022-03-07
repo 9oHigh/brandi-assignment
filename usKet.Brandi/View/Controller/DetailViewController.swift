@@ -19,8 +19,8 @@ final class DetailViewController: UIViewController,ViewControllerType {
         setUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         monitorNetwork()
     }
     
@@ -43,13 +43,14 @@ final class DetailViewController: UIViewController,ViewControllerType {
         }
         
         imageView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.top.equalTo(20) // Indicator..
             make.width.equalToSuperview()
+            make.bottom.equalTo(20)
         }
-        
+
         postInformView.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(scrollView.snp.bottom).offset(15)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
