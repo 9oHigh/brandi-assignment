@@ -162,7 +162,7 @@ extension SearchViewController : UICollectionViewDataSource,UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == viewModel.numberOfItem - viewModel.numberOfItem / 10 && !isEnd {
-            DispatchQueue.global(qos: .userInteractive).async {
+            DispatchQueue.main.async {
                 self.viewModel.addImages { [weak self] _ , isContinue in
                     guard let isContinue = isContinue else {
                         return
