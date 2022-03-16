@@ -7,7 +7,7 @@
 
 final class Service {
     
-    private let apiKey = ""
+    private let apiKey = "b43117bae6f844401d84e0da8e7b66be"
     private let repository = SearchRepository()
     private var model = ImageModel(meta: nil, documents: nil)
     
