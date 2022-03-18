@@ -92,7 +92,7 @@
 
          ![idend](https://user-images.githubusercontent.com/53691249/156909813-cf180335-13f8-4295-94d1-a5edd9deaaf5.png)
      
-      * isContinue 프로퍼티를 ViewModel에서 초기화 및 사용, 넘겨준 값을 이용해 indicator start/stop
+      * isContinue 프로퍼티를 ViewModel에서 초기화 및 사용, 넘겨준 값을 이용해 indicator start / stop
        ```swift
        func addImages(onCompletion: @escaping (ImageModel?,Bool?)->Void){
 
