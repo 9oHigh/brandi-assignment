@@ -1,4 +1,4 @@
-# Daum API를 활용하여 이미지 검색하기
+# Daum API를 활용하여 이미지 검색하기 👀
 
 ### Commit Convention
 - Add : 파일 추가
